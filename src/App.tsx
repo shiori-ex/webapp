@@ -2,13 +2,14 @@
 
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import { Client } from 'shiorijs';
 import LoginRoute from './routes/login/Login';
+import LinksRoute from './routes/links/Links';
 import GlobalState from './util/globalstate';
+import LocalStorageWrapper from './wrapper/localstorage';
+import Consts from './util/consts';
 
 import './App.scss';
-import LocalStorageWrapper from './wrapper/localstorage';
-import { Client } from 'shiorijs';
-import Consts from './util/consts';
 
 export default class App extends Component {
   state = {
@@ -18,28 +19,33 @@ export default class App extends Component {
   private globalState = new GlobalState();
 
   async componentDidMount() {
-    if (!this.globalState.client) {
-      const token = LocalStorageWrapper.get<string>('token');
-      if (token) {
-        this.globalState.client = new Client(token, Consts.API_ENDPOINT);
-      } else {
-        this.redirect('/login');
-      }
-    }
+    this.globalState.onError(() => {
+      this.redirect('/login');
+    });
   }
 
   render() {
     return (
-      <div>
-        <Router>
-          <Route
-            exact
-            path="/login"
-            render={() => <LoginRoute globalState={this.globalState} />}
-          ></Route>
+      <div className="flex">
+        <div className="app-router-outlet">
+          <Router>
+            <Route
+              exact
+              path="/login"
+              render={() => <LoginRoute globalState={this.globalState} />}
+            ></Route>
 
-          {this.state.redirect && <Redirect to={this.state.redirect} />}
-        </Router>
+            <Route
+              exact
+              path="/links"
+              render={() => <LinksRoute globalState={this.globalState} />}
+            ></Route>
+
+            <Route exact path="/" render={() => <Redirect to="/links" />} />
+
+            {this.state.redirect && <Redirect to={this.state.redirect} />}
+          </Router>
+        </div>
       </div>
     );
   }

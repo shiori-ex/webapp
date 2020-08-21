@@ -1,13 +1,13 @@
 /** @format */
 
 import React, { Component } from 'react';
-
-import './Login.scss';
 import LocalStorageWrapper from '../../wrapper/localstorage';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import GlobalState from '../../util/globalstate';
 import { Client } from 'shiorijs';
 import Consts from '../../util/consts';
+
+import './Login.scss';
 
 interface LoginRouteProps extends RouteComponentProps {
   globalState: GlobalState;
@@ -35,7 +35,6 @@ class LoginRoute extends Component<LoginRouteProps> {
     if (!token) return;
 
     LocalStorageWrapper.set('token', token);
-    this.props.globalState.client = new Client('token', Consts.API_ENDPOINT);
     this.props.history.push('/');
   }
 }

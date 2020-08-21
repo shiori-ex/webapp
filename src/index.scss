@@ -1,3 +1,5 @@
+/** @format */
+
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap');
 
 @import './vars.scss';
@@ -22,9 +24,18 @@ input {
   background-color: transparent;
   color: white;
 
-  transition: all .25s ease;
+  transition: all 0.25s ease;
 
   &:focus {
     border-bottom: solid 4px $c-accent;
   }
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+
+.flex {
+  display: flex;
 }
