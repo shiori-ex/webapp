@@ -20,20 +20,36 @@ code {
 input {
   border: none;
   outline: none;
-  border-bottom: solid 2px $c-accent;
+  border-bottom: solid 2px rgba($c-accent, 0.75);
   background-color: transparent;
   color: white;
+  font-size: 1em;
+  padding: 5px 0;
 
   transition: all 0.25s ease;
 
   &:focus {
-    border-bottom: solid 4px $c-accent;
+    border-bottom: solid 3px $c-accent;
   }
 }
 
 a {
   color: white;
   text-decoration: none;
+}
+
+button {
+  background-color: rgba($c-accent, 0.85);
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.25s ease;
+
+  &:hover {
+    background-color: rgba($c-accent, 1);
+    box-shadow: 0 5px 0 0 rgba(black, 0.75);
+  }
 }
 
 .flex {

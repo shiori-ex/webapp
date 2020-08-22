@@ -37,8 +37,6 @@ export default class LinkTile extends Component<{ link: LinkModel }> {
   }
 
   private get tags() {
-    return (this.props.link.tags ?? []).map((t) => <span>{t}</span>);
+    return (this.props.link.tags ?? []).map((t) => <span key={t}>{t}</span>);
   }
-
-  private onClick() {}
 }

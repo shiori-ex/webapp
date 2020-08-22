@@ -4,8 +4,6 @@ import React, { Component } from 'react';
 import LocalStorageWrapper from '../../wrapper/localstorage';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import GlobalState from '../../util/globalstate';
-import { Client } from 'shiorijs';
-import Consts from '../../util/consts';
 
 import './Login.scss';
 
@@ -27,7 +25,7 @@ class LoginRoute extends Component<LoginRouteProps> {
 
   private onKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'Enter') {
-      this.submitToken((event.target as HTMLInputElement).value);
+      this.submitToken(event.currentTarget.value);
     }
   }
 

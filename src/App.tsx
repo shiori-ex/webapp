@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import { Client } from 'shiorijs';
 import LoginRoute from './routes/login/Login';
 import LinksRoute from './routes/links/Links';
+import EditRoute from './routes/edit/Edit';
 import GlobalState from './util/globalstate';
 import LocalStorageWrapper from './wrapper/localstorage';
 import Consts from './util/consts';
@@ -39,6 +40,17 @@ export default class App extends Component {
               exact
               path="/links"
               render={() => <LinksRoute globalState={this.globalState} />}
+            ></Route>
+
+            <Route
+              exact
+              path="/links/:id"
+              render={({ match }) => (
+                <EditRoute
+                  globalState={this.globalState}
+                  id={match.params.id}
+                />
+              )}
             ></Route>
 
             <Route exact path="/" render={() => <Redirect to="/links" />} />

@@ -6,6 +6,9 @@ import GlobalState from '../../util/globalstate';
 import { AuthenticationError } from 'shiorijs/dist/errors';
 import { LinkModel } from 'shiorijs/dist/models';
 import LinkTile from '../../components/link-tile/LinkTile';
+import HoverButton from '../../components/hover-button/HoverButton';
+
+import { ReactComponent as PlusIcon } from '../../assets/icons/plus-outline.svg';
 
 interface LinksRouteProps extends RouteComponentProps {
   globalState: GlobalState;
@@ -30,9 +33,18 @@ class LinksRoute extends Component<LinksRouteProps> {
   }
 
   render() {
-    const linkList = this.state.links.map((l) => <LinkTile link={l} />);
+    const linkList = this.state.links.map((l) => (
+      <LinkTile link={l} key={l.id_str} />
+    ));
 
-    return <div>{linkList}</div>;
+    return (
+      <div>
+        <HoverButton onClick={() => this.props.history.push('/links/new')}>
+          <PlusIcon width="50px" height="50px" style={{ padding: '3px 0px' }} />
+        </HoverButton>
+        {linkList}
+      </div>
+    );
   }
 }
 
