@@ -28,7 +28,7 @@ class EditRoute extends Component<EditRouteProps> {
     if (id !== 'new') {
       try {
         const link = await this.props.globalState.client!.link(this.props.id);
-        const tags = link.tags.join(', ');
+        const tags = (link.tags ?? []).join(', ');
         this.setState({ link, tags });
       } catch (err) {
         if (err instanceof AuthenticationError) {
@@ -52,7 +52,7 @@ class EditRoute extends Component<EditRouteProps> {
           <input
             id="i-url"
             placeholder="https://example.com"
-            value={this.state.link.url}
+            value={this.state.link.url ?? ''}
             onChange={(e) =>
               this.onChange(
                 this.state.link,
@@ -67,7 +67,7 @@ class EditRoute extends Component<EditRouteProps> {
           <input
             id="i-description"
             placeholder="Very interesting page for stuff."
-            value={this.state.link.description}
+            value={this.state.link.description ?? ''}
             onChange={(e) =>
               this.onChange(
                 this.state.link,
@@ -100,14 +100,16 @@ class EditRoute extends Component<EditRouteProps> {
     );
   }
 
+  private splitTags(s: string): string[] {
+    return s
+      .split(',')
+      .filter((t) => !!t)
+      .map((t) => t.trim());
+  }
+
   private formatTags(): Promise<any> {
     return new Promise((resolve, _) => {
-      const tags = this.state.tags
-        .split(',')
-        .filter((t) => !!t)
-        .map((t) => t.trim())
-        .join(', ');
-
+      const tags = this.splitTags(this.state.tags).join(', ');
       this.setState({ tags }, resolve);
     });
   }
@@ -119,6 +121,7 @@ class EditRoute extends Component<EditRouteProps> {
 
   private async onSaveClick() {
     await this.formatTags();
+    this.state.link.tags = this.splitTags(this.state.tags);
 
     try {
       if (this.state.isNew) {

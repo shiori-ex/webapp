@@ -1,8 +1,11 @@
 /** @format */
 
+@import '../../vars.scss';
+
 $space-between: 10px;
 
 .link-tile {
+  display: flex;
   background-color: rgba(white, 0.1);
   padding: 10px;
   border-radius: 5px;
@@ -16,6 +19,10 @@ $space-between: 10px;
 
     .link-tile-title {
       text-decoration: underline;
+    }
+
+    .link-tile-controls {
+      opacity: 1;
     }
   }
 
@@ -35,13 +42,27 @@ $space-between: 10px;
   .link-tile-tags {
     display: flex;
 
-    > span {
+    >span {
       background-color: rgba(black, 0.5);
       font-weight: 300;
       font-size: 0.9em;
       padding: 2px 4px;
       border-radius: 10px;
       margin-right: 5px;
+
+      &:last-child {
+        margin-right: 0px;
+      }
+    }
+  }
+
+  .link-tile-controls {
+    margin-left: auto;
+    opacity: 0;
+    transition: all 0.25s ease;
+
+    >button {
+      margin-right: 10px;
 
       &:last-child {
         margin-right: 0px;

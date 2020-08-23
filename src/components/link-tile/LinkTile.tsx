@@ -2,21 +2,39 @@
 
 import React, { Component } from 'react';
 import { LinkModel } from 'shiorijs/dist/models';
+import { ReactComponent as EditIcon } from '../../assets/icons/edit-outline.svg';
+import { ReactComponent as TrashIcon } from '../../assets/icons/trash-outline.svg';
 
 import './LinkTile.scss';
 
-export default class LinkTile extends Component<{ link: LinkModel }> {
+interface LinkTileProps {
+  link: LinkModel;
+  onEdit?: (l: LinkModel) => void;
+  onRemove?: (l: LinkModel) => void;
+}
+
+export default class LinkTile extends Component<LinkTileProps> {
   render() {
     return (
       <a href={this.props.link.url}>
         <div className="link-tile">
-          <p className="link-tile-title">{this.title}</p>
-          {this.props.link.description && (
-            <p className="link-tile-description">
-              {this.props.link.description}
-            </p>
-          )}
-          <div className="link-tile-tags">{this.tags}</div>
+          <div>
+            <p className="link-tile-title">{this.title}</p>
+            {this.props.link.description && (
+              <p className="link-tile-description">
+                {this.props.link.description}
+              </p>
+            )}
+            <div className="link-tile-tags">{this.tags}</div>
+          </div>
+          <div className="link-tile-controls">
+            <button onClick={(e) => this.onEditClick(e)}>
+              <EditIcon height="25px" />
+            </button>
+            <button onClick={(e) => this.onRemoveClick(e)}>
+              <TrashIcon height="25px" />
+            </button>
+          </div>
         </div>
       </a>
     );
@@ -38,5 +56,15 @@ export default class LinkTile extends Component<{ link: LinkModel }> {
 
   private get tags() {
     return (this.props.link.tags ?? []).map((t) => <span key={t}>{t}</span>);
+  }
+
+  private onEditClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    e.preventDefault();
+    this.props.onEdit?.call(this, this.props.link);
+  }
+
+  private onRemoveClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    e.preventDefault();
+    this.props.onRemove?.call(this, this.props.link);
   }
 }

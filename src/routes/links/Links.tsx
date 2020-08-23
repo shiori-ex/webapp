@@ -29,7 +29,12 @@ class LinksRoute extends Component<LinksRouteProps> {
 
   render() {
     const linkList = this.state.links.map((l) => (
-      <LinkTile link={l} key={l.id_str} />
+      <LinkTile
+        link={l}
+        key={l.id_str}
+        onEdit={() => this.onLinkEdit(l)}
+        onRemove={() => this.onLinkRemove(l)}
+      />
     ));
 
     return (
@@ -78,6 +83,27 @@ class LinksRoute extends Component<LinksRouteProps> {
         }
       }
     });
+  }
+
+  private onLinkEdit(l: LinkModel) {
+    this.props.history.push(`/links/${l.id_str}`);
+  }
+
+  private async onLinkRemove(l: LinkModel) {
+    try {
+      await this.props.globalState.client!.removeLink(l.id_str);
+      const i = this.state.links.findIndex((cl) => cl.id_str === l.id_str);
+      if (i >= 0) {
+        this.state.links.splice(i, 1);
+        this.setState({});
+      }
+    } catch (err) {
+      if (err instanceof AuthenticationError) {
+        this.props.history.push('/login');
+      } else {
+        console.error(err);
+      }
+    }
   }
 }
 

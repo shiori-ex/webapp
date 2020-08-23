@@ -2,13 +2,14 @@
 @import '../../vars.scss';
 
 .edit-container {
+
   label,
   input {
     display: block;
     width: 100%;
   }
 
-  > h2 {
+  >h2 {
     margin-bottom: 40px;
   }
 
@@ -20,13 +21,13 @@
     display: flex;
     margin-top: 30px;
 
-    > button {
+    >button {
       &:first-child {
         width: 50%;
         margin-right: 30px;
-        background-color: #6c1977;
+        background-color: $c-secondary-dark;
 
-        > svg {
+        >svg {
           filter: invert;
         }
 
