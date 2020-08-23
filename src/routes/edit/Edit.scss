@@ -22,13 +22,21 @@
 
     > button {
       &:first-child {
-        width: 25%;
+        width: 50%;
         margin-right: 30px;
-        background-color: $c-secondary;
+        background-color: #6c1977;
+
+        > svg {
+          filter: invert;
+        }
+
+        &:hover {
+          background-color: $c-secondary;
+        }
       }
 
       &:last-child {
-        width: 75%;
+        width: 50%;
         margin-right: 0px;
       }
     }
