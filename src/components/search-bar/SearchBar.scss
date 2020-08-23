@@ -1,1 +1,11 @@
 /** @format */
+
+.search-bar-container {
+  display: flex;
+  margin-bottom: 20px;
+
+  >input {
+    width: 100%;
+    margin-left: 15px;
+  }
+}

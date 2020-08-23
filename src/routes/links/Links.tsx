@@ -10,6 +10,7 @@ import HoverButton from '../../components/hover-button/HoverButton';
 
 import { ReactComponent as PlusIcon } from '../../assets/icons/plus-outline.svg';
 import SearchBar from '../../components/search-bar/SearchBar';
+import InputLimiter from '../../util/inputlimiter';
 
 interface LinksRouteProps extends RouteComponentProps {
   globalState: GlobalState;
@@ -20,17 +21,10 @@ class LinksRoute extends Component<LinksRouteProps> {
     links: [] as LinkModel[],
   };
 
+  private searchLimiter = new InputLimiter(200);
+
   async componentDidMount() {
-    try {
-      const links = await this.props.globalState.client!.links();
-      this.setState({ links });
-    } catch (err) {
-      if (err instanceof AuthenticationError) {
-        this.props.history.push('/login');
-      } else {
-        console.error(err);
-      }
-    }
+    await this.fetchLinks();
   }
 
   render() {
@@ -44,11 +38,46 @@ class LinksRoute extends Component<LinksRouteProps> {
           <PlusIcon width="50px" height="50px" style={{ padding: '3px 0px' }} />
         </HoverButton>
 
-        <SearchBar />
+        <SearchBar
+          placeholder="Search..."
+          onChange={(v) => this.onSearchChange(v)}
+        />
 
         {linkList}
       </div>
     );
+  }
+
+  private async fetchLinks() {
+    try {
+      const links = await this.props.globalState.client!.links();
+      this.setState({ links });
+    } catch (err) {
+      if (err instanceof AuthenticationError) {
+        this.props.history.push('/login');
+      } else {
+        console.error(err);
+      }
+    }
+  }
+
+  private async onSearchChange(v: string) {
+    this.searchLimiter.input(v, async (val) => {
+      if (!val) {
+        await this.fetchLinks();
+      } else {
+        try {
+          const links = (await this.props.globalState.client!.search(val)).hits;
+          this.setState({ links });
+        } catch (err) {
+          if (err instanceof AuthenticationError) {
+            this.props.history.push('/login');
+          } else {
+            console.error(err);
+          }
+        }
+      }
+    });
   }
 }
 

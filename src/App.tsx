@@ -2,13 +2,10 @@
 
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
-import { Client } from 'shiorijs';
 import LoginRoute from './routes/login/Login';
 import LinksRoute from './routes/links/Links';
 import EditRoute from './routes/edit/Edit';
 import GlobalState from './util/globalstate';
-import LocalStorageWrapper from './wrapper/localstorage';
-import Consts from './util/consts';
 
 import './App.scss';
 
