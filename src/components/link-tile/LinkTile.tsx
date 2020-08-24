@@ -15,7 +15,8 @@ interface LinkTileProps {
 
 export default class LinkTile extends Component<LinkTileProps> {
   state = {
-    faviconURL: `${this.props.link.url}/favicon.ico`,
+    faviconState: 0,
+    faviconURL: this.getFaviconURL('ico'),
   };
 
   render() {
@@ -80,9 +81,31 @@ export default class LinkTile extends Component<LinkTileProps> {
     this.props.onRemove?.call(this, this.props.link);
   }
 
+  private getFaviconURL(type: string): string {
+    const url = this.props.link.url
+      .replace('http://', '')
+      .replace('https://', '')
+      .split('/')[0];
+
+    console.log(url);
+
+    return `https://${url}/favicon.${type}`;
+  }
+
   private onFaviconError() {
-    this.setState({
-      faviconURL: '/assets/globe-outline.svg',
-    });
+    switch (this.state.faviconState) {
+      case 0:
+        this.setState({
+          faviconURL: this.getFaviconURL('png'),
+          faviconState: 1,
+        });
+        break;
+
+      default:
+        this.setState({
+          faviconURL: '/assets/globe-outline.svg',
+          faviconState: 2,
+        });
+    }
   }
 }
