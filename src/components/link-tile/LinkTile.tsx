@@ -14,10 +14,22 @@ interface LinkTileProps {
 }
 
 export default class LinkTile extends Component<LinkTileProps> {
+  state = {
+    faviconURL: `${this.props.link.url}/favicon.ico`,
+  };
+
   render() {
     return (
       <a href={this.props.link.url}>
         <div className="link-tile">
+          <div className="link-tile-favicon">
+            <img
+              width="32"
+              height="32"
+              src={this.state.faviconURL}
+              onError={() => this.onFaviconError()}
+            />
+          </div>
           <div>
             <p className="link-tile-title">{this.title}</p>
             {this.props.link.description && (
@@ -66,5 +78,11 @@ export default class LinkTile extends Component<LinkTileProps> {
   private onRemoveClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
     this.props.onRemove?.call(this, this.props.link);
+  }
+
+  private onFaviconError() {
+    this.setState({
+      faviconURL: '/assets/globe-outline.svg',
+    });
   }
 }
