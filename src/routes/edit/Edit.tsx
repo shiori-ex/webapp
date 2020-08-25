@@ -7,6 +7,7 @@ import { LinkModel } from 'shiorijs/dist/models';
 import { AuthenticationError } from 'shiorijs/dist/errors';
 import { ReactComponent as SaveIcon } from '../../assets/icons/save-outline.svg';
 import { ReactComponent as BackIcon } from '../../assets/icons/arrow-ios-back-outline.svg';
+import SnackBarNotifier, { State } from '../../util/snackbar-notifier';
 
 import './Edit.scss';
 
@@ -129,13 +130,20 @@ class EditRoute extends Component<EditRouteProps> {
       } else {
         await this.props.globalState.client!.updateLink(this.state.link);
       }
+      SnackBarNotifier.show(
+        `Link ${this.state.isNew ? 'created' : 'updated'}.`,
+        State.SUCCESS
+      );
 
       this.props.history.goBack();
     } catch (err) {
       if (err instanceof AuthenticationError) {
         this.props.history.push('/login');
       } else {
-        console.error(err);
+        SnackBarNotifier.show(
+          `Failed ${this.state.isNew ? 'creating' : 'updating'} link: ${err}`,
+          State.ERROR
+        );
       }
     }
   }

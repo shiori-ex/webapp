@@ -27,6 +27,7 @@ export default class LinkTile extends Component<LinkTileProps> {
             <img
               width="32"
               height="32"
+              alt="favicon"
               src={this.state.faviconURL}
               onError={() => this.onFaviconError()}
             />

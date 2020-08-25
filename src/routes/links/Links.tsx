@@ -7,10 +7,10 @@ import { AuthenticationError } from 'shiorijs/dist/errors';
 import { LinkModel } from 'shiorijs/dist/models';
 import LinkTile from '../../components/link-tile/LinkTile';
 import HoverButton from '../../components/hover-button/HoverButton';
-
 import { ReactComponent as PlusIcon } from '../../assets/icons/plus-outline.svg';
 import SearchBar from '../../components/search-bar/SearchBar';
 import InputLimiter from '../../util/inputlimiter';
+import SnackBarNotifier, { State } from '../../util/snackbar-notifier';
 
 interface LinksRouteProps extends RouteComponentProps {
   globalState: GlobalState;
@@ -61,7 +61,7 @@ class LinksRoute extends Component<LinksRouteProps> {
       if (err instanceof AuthenticationError) {
         this.props.history.push('/login');
       } else {
-        console.error(err);
+        SnackBarNotifier.show(`Failed fetching links: ${err}`, State.ERROR);
       }
     }
   }
@@ -78,7 +78,10 @@ class LinksRoute extends Component<LinksRouteProps> {
           if (err instanceof AuthenticationError) {
             this.props.history.push('/login');
           } else {
-            console.error(err);
+            SnackBarNotifier.show(
+              `Failed fetching search: ${err}`,
+              State.ERROR
+            );
           }
         }
       }

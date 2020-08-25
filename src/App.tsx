@@ -8,10 +8,14 @@ import EditRoute from './routes/edit/Edit';
 import GlobalState from './util/globalstate';
 
 import './App.scss';
+import SnackBar from './components/snackbar/SnackBar';
+import SnackBarNotifier, { SnackBarEvent } from './util/snackbar-notifier';
 
 export default class App extends Component {
   state = {
     redirect: '',
+    snackBarVisible: false,
+    snackBarState: {} as SnackBarEvent,
   };
 
   private globalState = new GlobalState();
@@ -20,12 +24,27 @@ export default class App extends Component {
     this.globalState.onError(() => {
       this.redirect('/login');
     });
+
+    SnackBarNotifier.eventEmitter.on('show', (snackBarState) => {
+      this.setState({ snackBarState, snackBarVisible: true });
+    });
+
+    SnackBarNotifier.eventEmitter.on('hide', () => {
+      this.setState({ snackBarVisible: false });
+    });
   }
 
   render() {
     return (
       <div className="flex">
         <div className="app-router-outlet">
+          <SnackBar
+            state={this.state.snackBarState?.type}
+            visible={this.state.snackBarVisible}
+          >
+            {this.state.snackBarState?.content}
+          </SnackBar>
+
           <Router>
             <Route
               exact
