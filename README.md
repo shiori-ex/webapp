@@ -7,3 +7,9 @@ shiori is a web application to simply store, manage and search through links by 
 # Web App
 
 This project contains the SPA web application - built with React - to connect to the shiori REST API using the [shiori-js](https://github.com/shiori-ex/shiori-js) API wrapper package.
+
+---
+
+# Demo
+
+![](https://i.imgur.com/PMxNaE2.gif)
